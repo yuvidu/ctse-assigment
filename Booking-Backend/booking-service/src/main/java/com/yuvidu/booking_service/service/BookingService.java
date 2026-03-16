@@ -20,10 +20,30 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
+    public Bookingmodel getBookingById(String id) {
+        return bookingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Booking not found for that id: " + id));
+    }
+
     public List<Bookingmodel> getAllBookings() {
         return bookingRepository.findAll();
     }
 
+    public Bookingmodel updateBookingStatus(String id, String status) {
+        Bookingmodel booking = getBookingById(id);
+        booking.setStatus(status);
+        return bookingRepository.save(booking);
+    }
+
+    public Bookingmodel cancelBooking(String id) {
+        Bookingmodel booking = getBookingById(id);
+        booking.setStatus("CANCELLED");
+        return bookingRepository.save(booking);
+    }
+
+    public List<Bookingmodel> getBookingsByUser(String userId) {
+        return bookingRepository.findByUserId(userId);
+    }
 
     
 }

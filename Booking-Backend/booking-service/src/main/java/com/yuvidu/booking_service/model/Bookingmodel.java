@@ -2,7 +2,6 @@ package com.yuvidu.booking_service.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,7 +11,7 @@ public class Bookingmodel {
     @Id
     private String id;
     private String userId;
-    private String movieId;
+    private String showId;
     private List<String> seats;
     private String status;
     private String paymentId;
@@ -34,12 +33,12 @@ public class Bookingmodel {
         this.userId = userId;
     }
     
-    public String getMovieId() {
-        return movieId;
+    public String getShowId() {
+        return showId;
     }
     
-    public void setMovieId(String movieId) {
-        this.movieId = movieId;
+    public void setShowId(String showId) {
+        this.showId = showId;
     }
     
     public List<String> getSeats() {

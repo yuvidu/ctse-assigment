@@ -7,7 +7,7 @@ import com.yuvidu.booking_service.model.Bookingmodel;
 
 
 @RestController
-@RequestMapping("/bookings")
+@RequestMapping("/booking")
 public class BookingController {
 
     private final BookingService bookingService;
@@ -20,10 +20,32 @@ public class BookingController {
     public Bookingmodel createBooking(@RequestBody Bookingmodel booking) {
         return bookingService.createBooking(booking);
     }
+
+    @GetMapping("/{id}")
+    public Bookingmodel getBooking(@PathVariable String id) {
+        return bookingService.getBookingById(id);
+    }
+
+     // Get bookings by user
+    @GetMapping("/user/{userId}")
+    public List<Bookingmodel> getUserBookings(@PathVariable String userId) {
+        return bookingService.getBookingsByUser(userId);
+    }
     
     @GetMapping
     public List<Bookingmodel> getBookings() {
         return bookingService.getAllBookings();
+    }
+
+    @PutMapping("/{id}/status")
+    public Bookingmodel updateBookingStatus(@PathVariable String id, @RequestParam String status) {
+        return bookingService.updateBookingStatus(id, status);
+    }
+
+    @PutMapping("/{id}/cancel")
+    public String cancelBooking(@PathVariable String id) {
+        bookingService.cancelBooking(id);
+        return "Booking cancelled successfully";
     }
 
     
