@@ -15,6 +15,10 @@ public class BookingService {
     }
 
     public Bookingmodel createBooking(Bookingmodel booking) {
+        // add seat availability check
+        // if seat is not available, throw exception
+        // if seat is available, create booking
+        // validate user exists
         booking.setStatus("PENDING");  
         booking.setCreatedAt(LocalDateTime.now());     
         return bookingRepository.save(booking);
