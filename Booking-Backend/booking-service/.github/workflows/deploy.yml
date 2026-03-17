@@ -1,0 +1,44 @@
+name: Deploy Spring Boot App to Azure Container Apps
+
+on:
+  push:
+    branches:
+      - yuvidu-deploy-branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Docker login to ACR
+        uses: azure/docker-login@v1
+        with:
+          login-server: bookingacrsliitproject.azurecr.io
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} .
+          docker tag bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} bookingacrsliitproject.azurecr.io/booking-service:latest
+
+      - name: Push Docker image
+        run: |
+          docker push bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }}
+          docker push bookingacrsliitproject.azurecr.io/booking-service:latest
+
+      - name: Deploy to Container App
+        run: |
+          az extension add --name containerapp --upgrade
+          az containerapp update \
+            --name booking-service-app \
+            --resource-group booking-rg \
+            --image bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }}
