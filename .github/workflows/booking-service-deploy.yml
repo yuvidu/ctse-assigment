@@ -26,21 +26,28 @@ jobs:
       - name: Build and Push Docker image
         run: |
           cd Booking-Backend/booking-service
-          # Build image using Git SHA as version
           docker build -t bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} .
           docker tag bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} bookingacrsliitproject.azurecr.io/booking-service:latest
-          
-          # Push images to ACR
           docker push bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }}
           docker push bookingacrsliitproject.azurecr.io/booking-service:latest
 
-      - name: Deploy to Container App
-        run: |
-          # Add/upgrade the containerapp extension (preview)
-          az extension add --name containerapp --upgrade || true
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: >
+            {
+              "clientId": "${{ secrets.ACR_USERNAME }}",
+              "clientSecret": "${{ secrets.ACR_PASSWORD }}",
+              "subscriptionId": "${{ secrets.AZURE_SUBSCRIPTION_ID }}",
+              "tenantId": "${{ secrets.AZURE_TENANT_ID }}"
+            }
 
-          # Update Container App to the new image
-          az containerapp update \
-            --name booking-service-app \
-            --resource-group booking-rg \
-            --image bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }}
+      - name: Update Azure Container App
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az containerapp update \
+              --name booking-service-app \
+              --resource-group booking-rg \
+              --image bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }}
