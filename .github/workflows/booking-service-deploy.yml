@@ -9,7 +9,7 @@ on:
       - '.github/workflows/booking-service-deploy.yml'
 
 jobs:
-  build-and-deploy:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,16 +26,10 @@ jobs:
       - name: Build and Push Docker image
         run: |
           cd Booking-Backend/booking-service
+          # Build image with Git SHA as version
           docker build -t bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} .
           docker tag bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} bookingacrsliitproject.azurecr.io/booking-service:latest
           
+          # Push images to ACR
           docker push bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }}
           docker push bookingacrsliitproject.azurecr.io/booking-service:latest
-
-      - name: Update Container App to new image
-        run: |
-          az extension add --name containerapp --upgrade || true
-          az containerapp update \
-            --name booking-service-app \
-            --resource-group booking-rg \
-            --image bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }}
