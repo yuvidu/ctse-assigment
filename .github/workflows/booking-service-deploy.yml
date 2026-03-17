@@ -40,5 +40,9 @@ jobs:
           az containerapp update \
             --name booking-service-app \
             --resource-group booking-rg \
-            --image bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} \
-            --registry-identity system
+            --image bookingacrsliitproject.azurecr.io/booking-service:${GITHUB_SHA} \
+            --registry-server bookingacrsliitproject.azurecr.io \
+            --registry-username ${{ secrets.ACR_USERNAME }} \
+            --registry-password ${{ secrets.ACR_PASSWORD }}
+          
+            
