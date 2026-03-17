@@ -31,11 +31,3 @@ jobs:
           
           docker push bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }}
           docker push bookingacrsliitproject.azurecr.io/booking-service:latest
-
-      - name: Deploy to Container App
-        run: |
-          az extension add --name containerapp --upgrade || true
-          az containerapp update \
-            --name booking-service-app \
-            --resource-group booking-rg \
-            --image bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }}
