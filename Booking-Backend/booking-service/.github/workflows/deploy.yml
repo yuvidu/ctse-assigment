@@ -1,23 +1,38 @@
 name: Deploy Spring Boot App to Azure Container Apps
 
+# Trigger pipeline only on deploy branch
 on:
   push:
     branches:
-      - yuvidu-deploy-branch
+      - deploy
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout code
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
+      # 2️⃣ Setup Java (Spring Boot build)
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # 3️⃣ Build Spring Boot JAR
+      - name: Build JAR
+        run: mvn clean package -DskipTests
+
+      # 4️⃣ Login to Azure
       - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      # 5️⃣ Login to ACR
       - name: Docker login to ACR
         uses: azure/docker-login@v1
         with:
@@ -25,20 +40,20 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
+      # 6️⃣ Build Docker image
       - name: Build Docker image
         run: |
-          docker build -t bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} .
-          docker tag bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} bookingacrsliitproject.azurecr.io/booking-service:latest
+          docker build -t bookingacrsliitproject.azurecr.io/booking-service:v1 .
 
+      # 7️⃣ Push Docker image to ACR
       - name: Push Docker image
         run: |
-          docker push bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }}
-          docker push bookingacrsliitproject.azurecr.io/booking-service:latest
+          docker push bookingacrsliitproject.azurecr.io/booking-service:v1
 
+      # 8️⃣ Deploy to Azure Container App
       - name: Deploy to Container App
         run: |
-          az extension add --name containerapp --upgrade
           az containerapp update \
             --name booking-service-app \
             --resource-group booking-rg \
-            --image bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }}
+            --image bookingacrsliitproject.azurecr.io/booking-service:v1
