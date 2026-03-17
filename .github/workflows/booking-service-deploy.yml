@@ -3,7 +3,7 @@ name: Deploy Booking Service to Azure Container Apps
 on:
   push:
     branches:
-      - deploy
+      - yuvidu-deploy-service-backend
     paths:
       - 'Booking-Backend/booking-service/**'
       - '.github/workflows/booking-service-deploy.yml'
