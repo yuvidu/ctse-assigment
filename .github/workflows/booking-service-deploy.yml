@@ -34,10 +34,7 @@ jobs:
 
       - name: Deploy to Container App
         run: |
-          # Add/upgrade extension (optional, GitHub runners have preview)
           az extension add --name containerapp --upgrade || true
-          
-          # Update Container App to the new image
           az containerapp update \
             --name booking-service-app \
             --resource-group booking-rg \
