@@ -13,9 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout the code
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2. Docker login to Azure Container Registry
       - name: Docker login to ACR
         uses: azure/docker-login@v1
         with:
@@ -23,20 +25,23 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
+      # 3. Build and push Docker image
       - name: Build and Push Docker image
         run: |
           cd Booking-Backend/booking-service
+
+          # Build image using Git SHA
           docker build -t bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} .
+
+          # Tag image as 'latest' (important for auto-pull)
           docker tag bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} bookingacrsliitproject.azurecr.io/booking-service:latest
+
+          # Push both SHA version and latest
           docker push bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }}
           docker push bookingacrsliitproject.azurecr.io/booking-service:latest
 
-      - name: Verify deployed image
+      # 4. (Optional) Manual instructions for Container App
+      - name: Reminder
         run: |
-          echo "Checking which image the Container App is running..."
-          az extension add --name containerapp --upgrade || true
-          az containerapp show \
-            --name booking-service-app \
-            --resource-group booking-rg \
-            --query "properties.template.containers[0].image" \
-            -o tsv
+          echo "Push complete. The Container App will automatically pull the latest image if auto-pull is enabled."
+          echo "If not, go to Azure Portal → Container Apps → booking-service-app → Revisions → Redeploy to update."
