@@ -1,0 +1,47 @@
+name: Deploy Booking Service to Azure Container Apps
+
+on:
+  push:
+    branches:
+      - deploy
+    paths:
+      - 'Booking-Backend/booking-service/**'
+      - '.github/workflows/booking-service-deploy.yml'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Docker login to ACR
+        uses: azure/docker-login@v1
+        with:
+          login-server: bookingacrsliitproject.azurecr.io
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and Push Docker image
+        run: |
+          # Use multi-stage Dockerfile which handles the Maven build and creates the image
+          cd Booking-Backend/booking-service
+          docker build -t bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} .
+          docker tag bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} bookingacrsliitproject.azurecr.io/booking-service:latest
+          
+          docker push bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }}
+          docker push bookingacrsliitproject.azurecr.io/booking-service:latest
+
+      - name: Deploy to Container App
+        run: |
+          az extension add --name containerapp --upgrade
+          az containerapp update \
+            --name booking-service-app \
+            --resource-group booking-rg \
+            --image bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }}
