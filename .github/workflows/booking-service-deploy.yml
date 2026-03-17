@@ -9,7 +9,7 @@ on:
       - '.github/workflows/booking-service-deploy.yml'
 
 jobs:
-  build-and-push:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,19 +26,21 @@ jobs:
       - name: Build and Push Docker image
         run: |
           cd Booking-Backend/booking-service
-          
-          # Build image using Git SHA as tag
+          # Build image using Git SHA as version
           docker build -t bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} .
-          
-          # Tag image as latest for Container App auto-pull
           docker tag bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} bookingacrsliitproject.azurecr.io/booking-service:latest
           
-          # Push both SHA and latest tags
+          # Push images to ACR
           docker push bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }}
           docker push bookingacrsliitproject.azurecr.io/booking-service:latest
 
-      - name: Reminder
+      - name: Deploy to Container App
         run: |
-          echo "Docker images pushed to ACR."
-          echo "If auto-pull is enabled, Container App will pull the latest image automatically."
-          echo "Otherwise, manually redeploy the revision in the Azure Portal."
+          # Add/upgrade the containerapp extension (preview)
+          az extension add --name containerapp --upgrade || true
+
+          # Update Container App to the new image
+          az containerapp update \
+            --name booking-service-app \
+            --resource-group booking-rg \
+            --image bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }}
