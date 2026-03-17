@@ -9,22 +9,13 @@ on:
       - '.github/workflows/booking-service-deploy.yml'
 
 jobs:
-  build-and-deploy:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 1. Login to Azure using username/password
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          auth-type: password
-          username: ${{ secrets.AZURE_USERNAME }}
-          password: ${{ secrets.AZURE_PASSWORD }}
-
-      # 2. Docker login to ACR
       - name: Docker login to ACR
         uses: azure/docker-login@v1
         with:
@@ -32,20 +23,22 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
-      # 3. Build and push Docker image
       - name: Build and Push Docker image
         run: |
           cd Booking-Backend/booking-service
+          
+          # Build image using Git SHA as tag
           docker build -t bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} .
+          
+          # Tag image as latest for Container App auto-pull
           docker tag bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} bookingacrsliitproject.azurecr.io/booking-service:latest
+          
+          # Push both SHA and latest tags
           docker push bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }}
           docker push bookingacrsliitproject.azurecr.io/booking-service:latest
 
-      # 4. Update the Container App to latest image
-      - name: Deploy to Container App
+      - name: Reminder
         run: |
-          az extension add --name containerapp --upgrade || true
-          az containerapp update \
-            --name booking-service-app \
-            --resource-group booking-rg \
-            --image bookingacrsliitproject.azurecr.io/booking-service:latest
+          echo "Docker images pushed to ACR."
+          echo "If auto-pull is enabled, Container App will pull the latest image automatically."
+          echo "Otherwise, manually redeploy the revision in the Azure Portal."
