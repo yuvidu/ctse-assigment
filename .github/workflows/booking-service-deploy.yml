@@ -26,10 +26,17 @@ jobs:
       - name: Build and Push Docker image
         run: |
           cd Booking-Backend/booking-service
-          # Build image with Git SHA as version
           docker build -t bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} .
           docker tag bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} bookingacrsliitproject.azurecr.io/booking-service:latest
-          
-          # Push images to ACR
           docker push bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }}
           docker push bookingacrsliitproject.azurecr.io/booking-service:latest
+
+      - name: Verify deployed image
+        run: |
+          echo "Checking which image the Container App is running..."
+          az extension add --name containerapp --upgrade || true
+          az containerapp show \
+            --name booking-service-app \
+            --resource-group booking-rg \
+            --query "properties.template.containers[0].image" \
+            -o tsv
