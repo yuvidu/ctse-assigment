@@ -1,12 +1,14 @@
 import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
+import Login from './user-frontend/pages/Login'
+import Register from './user-frontend/pages/Register'
+import Profile from './user-frontend/pages/Profile'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
-
+function Home({ count, setCount }) {
   return (
     <>
       <section id="center">
@@ -17,6 +19,9 @@ function App() {
         </div>
         <div>
           <h1>Get started</h1>
+          <nav className="auth-nav">
+            <Link to="/login">Login</Link> | <Link to="/register">Register</Link>
+          </nav>
           <p>
             Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
           </p>
@@ -111,10 +116,24 @@ function App() {
           </ul>
         </div>
       </section>
+    </>
+  )
+}
 
+function App() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home count={count} setCount={setCount} />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/profile" element={<Profile />} />
+      </Routes>
       <div className="ticks"></div>
       <section id="spacer"></section>
-    </>
+    </Router>
   )
 }
 
