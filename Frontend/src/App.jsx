@@ -1,27 +1,23 @@
 import { useState } from 'react'
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
-import Login from './user-frontend/pages/Login'
-import Register from './user-frontend/pages/Register'
-import Profile from './user-frontend/pages/Profile'
 import './App.css'
 
-function Home({ count, setCount }) {
+function App() {
+  const [count, setCount] = useState(0)
+
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <Router>
+      <nav className="navbar">
+        <NavLink to="/" className="nav-brand">MovieTickets</NavLink>
+        <div className="nav-links">
+          <NavLink to="/" className={({ isActive }) => `nav-link ${isActive && window.location.pathname === '/' ? 'active' : ''}`}>Home</NavLink>
+          <NavLink to="/bookings/new" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Book Ticlets</NavLink>
+          <NavLink to="/bookings/manage" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Manage Bookings</NavLink>
         </div>
         <div>
           <h1>Get started</h1>
-          <nav className="auth-nav">
-            <Link to="/login">Login</Link> | <Link to="/register">Register</Link>
-          </nav>
           <p>
             Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
           </p>
@@ -116,25 +112,11 @@ function Home({ count, setCount }) {
           </ul>
         </div>
       </section>
+
+      <div className="ticks"></div>
+      <section id="spacer"></section>
     </>
   )
 }
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home count={count} setCount={setCount} />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
-      </Routes>
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </Router>
-  )
-}
-
-export default App
+export default App;
