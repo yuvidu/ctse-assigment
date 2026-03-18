@@ -10,12 +10,14 @@ const AuthService = {
     const response = await api.post('/users/login', { email, password });
     if (response.data.token) {
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userId', response.data.userId);
     }
     return response.data;
   },
 
   logout: () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
   },
 
   getCurrentUser: () => {
