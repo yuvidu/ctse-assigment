@@ -2,6 +2,10 @@ import { BrowserRouter as Router, Routes, Route, NavLink, Navigate } from 'react
 import Login from './user-frontend/pages/Login';
 import Register from './user-frontend/pages/Register';
 import Profile from './user-frontend/pages/Profile';
+import Home from './booking-frontend/pages/Home';
+import BookingList from './booking-frontend/pages/BookingList';
+import CreateBooking from './booking-frontend/pages/CreateBooking';
+import UserBookings from './booking-frontend/pages/UserBookings';
 import './App.css';
 
 function App() {
@@ -14,6 +18,7 @@ function App() {
           </div>
           <div className="nav-links">
             <NavLink to="/" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Home</NavLink>
+            <NavLink to="/bookings/manage" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Manage Bookings</NavLink>
             <NavLink to="/profile" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Profile</NavLink>
           </div>
           <div className="nav-auth">
@@ -39,6 +44,10 @@ function App() {
                 </div>
               </div>
             } />
+            <Route path="/bookinghome" element={<Home />} />
+            <Route path="/bookings/new" element={<CreateBooking />} />
+            <Route path="/bookings/manage" element={<BookingList />} />
+            <Route path="/bookings/user/:userId" element={<UserBookings />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
