@@ -25,24 +25,13 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: Frontend/package-lock.json
-
-      - name: Install Frontend Dependencies
-        working-directory: Frontend
-        run: npm ci
-
-      - name: Run Frontend Tests and Coverage
-        working-directory: Frontend
-        run: npm run coverage
-
-      - name: Build and Test Backend (with Jacoco)
+      - name: Build and Test Booking Service (with JaCoCo)
         working-directory: Booking-Backend/booking-service
-        run: mvn verify
+        run: mvn -B verify
+
+      - name: Build and Test User Service (with JaCoCo)
+        working-directory: User-Backend/user-service
+        run: mvn -B verify
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
