@@ -1,11 +1,13 @@
-com\andrew\user_service\controller\UserController$LoginRequest.class
-com\andrew\user_service\repository\UserRepository.class
 com\andrew\user_service\config\SecurityConfig.class
 com\andrew\user_service\config\ApplicationConfig.class
+com\andrew\user_service\model\Usermodel$UsermodelBuilder.class
+com\andrew\user_service\config\JwtAuthenticationFilter.class
+com\andrew\user_service\controller\UserController$LoginRequest.class
+com\andrew\user_service\repository\UserRepository.class
+com\andrew\user_service\service\UserService$1.class
 com\andrew\user_service\service\UserService.class
 com\andrew\user_service\controller\UserController.class
 com\andrew\user_service\UserServiceApplication.class
-com\andrew\user_service\model\Usermodel$UsermodelBuilder.class
 com\andrew\user_service\model\Usermodel.class
-com\andrew\user_service\config\JwtAuthenticationFilter.class
+com\andrew\user_service\dto\BookingDTO.class
 com\andrew\user_service\config\JwtUtils.class
