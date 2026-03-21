@@ -14,7 +14,7 @@ public class Bookingmodel {
     private String showId;
     private List<String> seats;
     private String status;
-    private String paymentId;
+    private Double ticketPrice;
     private LocalDateTime createdAt;
     
     public String getId() {
@@ -57,12 +57,12 @@ public class Bookingmodel {
         this.status = status;
     }
     
-    public String getPaymentId() {
-        return paymentId;
+    public Double getTicketPrice() {
+        return ticketPrice;
     }
     
-    public void setPaymentId(String paymentId) {
-        this.paymentId = paymentId;
+    public void setTicketPrice(Double ticketPrice) {
+        this.ticketPrice = ticketPrice;
     }
     
     public LocalDateTime getCreatedAt() {

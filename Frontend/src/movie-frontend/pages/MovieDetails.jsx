@@ -1,11 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import './MovieDetails.css';
 
 export default function MovieDetails() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
   const [schedules, setSchedules] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -165,6 +164,10 @@ export default function MovieDetails() {
                     </div>
                     <Link 
                       to={`/bookings/new?scheduleId=${schedule.id}&movieId=${movie.id}`} 
+                      state={{
+                        schedule,
+                        movieTitle: movie.title
+                      }}
                       className="btn btn-primary btn-sm"
                     >
                       Book Now
