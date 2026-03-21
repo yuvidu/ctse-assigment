@@ -34,12 +34,18 @@ public class UserService {
 
     public List<BookingDTO> getBookingsForUser(String userId) {
         String url = bookingServiceUrl + "/booking/user/" + userId;
-        return restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<BookingDTO>>() {}
-        ).getBody();
+        try {
+            return restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<BookingDTO>>() {}
+            ).getBody();
+        } catch (Exception e) {
+            // Log the error and return empty list to prevent user-service from crashing (500)
+            // if booking-service is down or port is misconfigured.
+            return new ArrayList<>();
+        }
     }
 
     public Usermodel register(Usermodel user) {
