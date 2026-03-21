@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
@@ -34,6 +35,13 @@ public class Movie {
     private LocalDate releaseDate;
     private double rating;
     private String posterUrl;
+    private String backdropUrl;
+    
+    // Detailed cast: [{"name": "...", "character": "...", "profilePath": "..."}]
+    private List<Map<String, String>> castDetails;
+    
+    private List<String> additionalImages;
+    private String tmdbId;
     
     @Builder.Default
     private String status = "NOW_SHOWING"; // NOW_SHOWING, COMING_SOON, ENDED

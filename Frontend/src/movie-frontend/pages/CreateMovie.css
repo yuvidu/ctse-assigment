@@ -78,8 +78,41 @@
   margin-top: 0.25rem;
 }
 
-.selected-preview {
+/* TMDB Search Styles */
+.tmdb-search-section {
+  background: var(--surface-hover);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px dashed var(--primary);
+}
+
+.tmdb-results-dropdown {
+  background: var(--bg-color);
+  border: 1px solid var(--border);
+  border-radius: 8px;
   margin-top: 0.5rem;
-  font-size: 0.75rem;
-  color: var(--text-muted);
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+}
+
+.tmdb-result-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.tmdb-result-item:hover {
+  background: var(--surface-hover);
+}
+
+.tmdb-result-item img {
+  width: 40px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
 }

@@ -51,6 +51,10 @@ public class MovieService {
                     existingMovie.setReleaseDate(updatedMovie.getReleaseDate());
                     existingMovie.setRating(updatedMovie.getRating());
                     existingMovie.setPosterUrl(updatedMovie.getPosterUrl());
+                    existingMovie.setBackdropUrl(updatedMovie.getBackdropUrl());
+                    existingMovie.setTmdbId(updatedMovie.getTmdbId());
+                    existingMovie.setCastDetails(updatedMovie.getCastDetails());
+                    existingMovie.setAdditionalImages(updatedMovie.getAdditionalImages());
                     existingMovie.setStatus(updatedMovie.getStatus());
                     return movieRepository.save(existingMovie);
                 })
