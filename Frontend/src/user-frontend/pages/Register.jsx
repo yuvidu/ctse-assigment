@@ -7,7 +7,7 @@ const Register = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        passwordHash: '',
+        password: '',
         phone: ''
     });
     const [error, setError] = useState('');
@@ -56,8 +56,8 @@ const Register = () => {
                     <label>Password</label>
                     <input 
                         type="password" 
-                        name="passwordHash"
-                        value={formData.passwordHash} 
+                        name="password"
+                        value={formData.password} 
                         onChange={handleChange} 
                         required 
                     />

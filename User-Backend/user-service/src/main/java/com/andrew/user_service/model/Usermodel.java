@@ -22,6 +22,7 @@ public class Usermodel {
 
     private String email;
 
+    @com.fasterxml.jackson.annotation.JsonProperty(value = "password", access = com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY)
     private String passwordHash;
 
     private String phone;

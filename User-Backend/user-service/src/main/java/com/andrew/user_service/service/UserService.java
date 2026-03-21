@@ -49,6 +49,10 @@ public class UserService {
     }
 
     public Usermodel register(Usermodel user) {
+        if (user.getPasswordHash() == null) {
+            throw new RuntimeException("Password is required");
+        }
+
         user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
         return userRepository.save(user);
     }
