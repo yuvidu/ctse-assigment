@@ -13,7 +13,7 @@ export default function MovieList() {
       try {
         // Use the API Gateway URL for movies if available, or direct service.
         // Assuming API Gateway routes /api/movies to the movie service.
-        const response = await axios.get('http://localhost:8080/api/movies');
+        const response = await axios.get('http://localhost:8087/movies');
         setMovies(response.data);
       } catch (err) {
         console.error('Failed to fetch movies', err);

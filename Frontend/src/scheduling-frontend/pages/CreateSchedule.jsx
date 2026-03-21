@@ -44,7 +44,7 @@ export default function CreateSchedule() {
         availableSeats: parseInt(formData.availableSeats, 10)
       };
 
-      await axios.post('http://localhost:8080/api/schedules', payload);
+      await axios.post('http://localhost:8087/schedules', payload);
       navigate('/schedules');
     } catch (err) {
       console.error('Error creating schedule:', err);

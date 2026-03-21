@@ -11,7 +11,7 @@ export default function ScheduleList() {
   useEffect(() => {
     const fetchSchedules = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/schedules');
+        const response = await axios.get('http://localhost:8087/schedules');
         setSchedules(response.data);
       } catch (err) {
         console.error('Failed to fetch schedules', err);

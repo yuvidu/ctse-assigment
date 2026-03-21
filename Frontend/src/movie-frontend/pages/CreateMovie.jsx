@@ -43,7 +43,7 @@ export default function CreateMovie() {
         rating: parseFloat(formData.rating)
       };
 
-      await axios.post('http://localhost:8080/api/movies', payload);
+      await axios.post('http://localhost:8087/movies', payload);
       navigate('/movies');
     } catch (err) {
       console.error('Error creating movie:', err);
