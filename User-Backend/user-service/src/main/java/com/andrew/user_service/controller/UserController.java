@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,11 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping("/")
+    public String hello() {
+        return "Hello World";
+    }
 
     @PostMapping("/register")
     public ResponseEntity<Usermodel> register(@RequestBody Usermodel user) {
@@ -28,20 +34,24 @@ public class UserController {
         String token = userService.login(request.email(), request.password());
         var user = userService.getUserByEmail(request.email()).orElseThrow();
         return ResponseEntity.ok(Map.of(
-            "token", token,
-            "userId", user.getId()
-        ));
+                "token", token,
+                "userId", user.getId()));
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<Map<String, String>> getUserDetails(@PathVariable String userId) {
+        if (userId == null || userId.trim().isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         return userService.getUserById(userId)
-                .map(user -> ResponseEntity.ok(Map.of(
-                        "id", user.getId(),
-                        "name", user.getName(),
-                        "email", user.getEmail(),
-                        "phone", user.getPhone() != null ? user.getPhone() : ""
-                )))
+                .map(user -> {
+                    Map<String, String> response = new HashMap<>();
+                    response.put("id", user.getId());
+                    response.put("name", user.getName() != null ? user.getName() : "");
+                    response.put("email", user.getEmail() != null ? user.getEmail() : "");
+                    response.put("phone", user.getPhone() != null ? user.getPhone() : "");
+                    return ResponseEntity.ok(response);
+                })
                 .orElse(ResponseEntity.notFound().build());
     }
 

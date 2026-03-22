@@ -92,7 +92,7 @@ const Profile = () => {
                         <h2>My Bookings</h2>
                         <span className="badge">{bookings.length} Total</span>
                     </div>
-                    
+
                     {bookings.length > 0 ? (
                         <div className="bookings-table-container">
                             <table className="bookings-table">
@@ -110,13 +110,13 @@ const Profile = () => {
                                             <td className="booking-id">#{booking.id.substring(0, 8)}</td>
                                             <td> {booking.seats && booking.seats.length > 0 ? booking.seats.join(', ') : 'N/A'}</td>
                                             <td>
-                                              {booking.createdAt
-                                                ? new Date(
-                                                    Array.isArray(booking.createdAt)
-                                                      ? booking.createdAt[0]
-                                                      : booking.createdAt
-                                                  ).toLocaleDateString()
-                                                : '—'}
+                                                {booking.createdAt
+                                                    ? new Date(
+                                                        Array.isArray(booking.createdAt)
+                                                            ? booking.createdAt[0]
+                                                            : booking.createdAt
+                                                    ).toLocaleDateString()
+                                                    : '—'}
                                             </td>
                                             <td>
                                                 <span className={`status-badge ${booking.status?.toLowerCase()}`}>
