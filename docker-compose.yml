@@ -1,4 +1,22 @@
 services:
+  frontend:
+    build:
+      context: ./Frontend
+      args:
+        - VITE_API_BASE_URL=https://api-gateway-app.mangohill-a3908265.southeastasia.azurecontainerapps.io
+        - VITE_PAYMENT_BASIC=cGF5bWVudC11c2VyOnBheW1lbnQtcGFzcw==
+        - VITE_USE_MOCK_PAYMENT_PAGE=true
+        - VITE_ADMIN_USERNAME=admin
+        - VITE_ADMIN_PASSWORD=admin-pass
+        - VITE_TMDB_API_KEY=73883ebdfd5455234a4b1970fd7f8d5e
+        - VITE_TMDB_ACCESS_TOKEN=eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3Mzg4M2ViZGZkNTQ1NTIzNGE0YjE5NzBmZDdmOGQ1ZSIsIm5iZiI6MTc2NDYzODY5MC40MTY5OTk4LCJzdWIiOiI2OTJlM2ZlMmU0MWU5Y2MyMWMzZWE1NWMiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.Fpk1H6fz-j8CwQm7B4s2EejEnTe_XTw1AkfXleV-xlE
+    ports:
+      - "3000:80"
+    depends_on:
+      - api-gateway
+    networks:
+      - app-network
+
   api-gateway:
     build:
       context: ./Gateway/api-gateway
@@ -11,6 +29,8 @@ services:
       - MOVIE_SERVICE_URL=https://movie-service-app.mangohill-a3908265.southeastasia.azurecontainerapps.io
       - SCHEDULING_SERVICE_URL=https://scheduling-service-app.mangohill-a3908265.southeastasia.azurecontainerapps.io
       - PAYMENT_SERVICE_URL=https://payment-service-app.mangohill-a3908265.southeastasia.azurecontainerapps.io
+    networks:
+      - app-network
 
   # Other services are deployed on Azure Container Apps and not run locally
   # user-service:
@@ -74,3 +94,7 @@ services:
   #     - SERVER_PORT=8084
   #     - SPRING_DATA_MONGODB_URI=mongodb+srv://yuvidu:yuvidu@cluster1.kt7i4.mongodb.net/microservice?retryWrites=true&w=majority&appName=Cluster1
   #     - JWT_SECRET=YnJlYWtvdXQtY3RzZS1hc3NpZ25tZW50LXNlY3JldC1rZXktMjAyNjA0MDY=
+
+networks:
+  app-network:
+    driver: bridge
