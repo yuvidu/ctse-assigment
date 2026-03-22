@@ -121,9 +121,6 @@ class ScheduleServiceTest {
     void createSchedule_endBeforeStart_throws() {
         Schedule bad = buildSchedule(null, LocalTime.of(14, 0), LocalTime.of(12, 0));
 
-        // findByHallIdAndDate will not be reached; but stub it anyway to avoid unnecessary stubbing warnings
-        when(scheduleRepository.findByHallIdAndDate(HALL_A, TODAY)).thenReturn(List.of());
-
         assertThatThrownBy(() -> scheduleService.createSchedule(bad))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("End time must be after start time");
@@ -133,8 +130,6 @@ class ScheduleServiceTest {
     @DisplayName("createSchedule throws when endTime equals startTime")
     void createSchedule_endEqualsStart_throws() {
         Schedule bad = buildSchedule(null, LocalTime.of(14, 0), LocalTime.of(14, 0));
-
-        when(scheduleRepository.findByHallIdAndDate(HALL_A, TODAY)).thenReturn(List.of());
 
         assertThatThrownBy(() -> scheduleService.createSchedule(bad))
                 .isInstanceOf(IllegalArgumentException.class);
