@@ -49,9 +49,9 @@ mvnw.cmd
 .eslintcache
 
 # Env (keep template tracked)
-.env
-.env.*
-!.env.example
+# .env
+# .env.*
+# !.env.example
 
 # OS
 .DS_Store
