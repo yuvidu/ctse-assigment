@@ -6,8 +6,12 @@ import { getGatewayBaseUrl } from '../../lib/gateway';
  * and for mock gateway when PAYMENT_GATEWAY_PROVIDER=mock.
  */
 export async function createPayment(payload) {
+  const token = localStorage.getItem('token');
   const response = await axios.post(`${getGatewayBaseUrl()}/payments`, payload, {
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
   });
   return response.data;
 }

@@ -7,9 +7,11 @@ const gateway = () => getGatewayBaseUrl();
 const bookingBase = () => `${gateway()}/booking`;
 
 export const bookingApi = {
-  /** booking-service-late: POST /booking */
-  createBookingV2: async (payload) => {
-    const response = await axios.post(`${gateway()}/booking`, payload);
+  /** booking-service-late: POST /booking (requires JWT) */
+  createBookingV2: async (payload, token) => {
+    const response = await axios.post(`${gateway()}/booking`, payload, {
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    });
     return response.data;
   },
 

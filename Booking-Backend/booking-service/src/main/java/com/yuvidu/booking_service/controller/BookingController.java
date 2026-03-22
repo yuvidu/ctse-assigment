@@ -7,7 +7,6 @@ import com.yuvidu.booking_service.model.Bookingmodel;
 
 @RestController
 @RequestMapping("/booking")
-@CrossOrigin(origins = "http://localhost:5173")
 public class BookingController {
 
     private final BookingService bookingService;

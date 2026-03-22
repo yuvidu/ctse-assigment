@@ -138,12 +138,13 @@ export default function CreateBooking() {
         userId: userId || null,
         showId: scheduleId,
         seats: selectedSeats,
-        paymentId: 'PENDING',
+        ticketprice: schedule?.price || 0,
         status: 'PENDING',
         ticketEmail: ticketEmail.trim(),
         guestName: userId ? guestName.trim() || undefined : guestName.trim(),
       };
-      const booking = await bookingApi.createBookingV2(payload);
+      const token = localStorage.getItem('token');
+      const booking = await bookingApi.createBookingV2(payload, token);
       const bookingId = booking?.id;
       if (!bookingId) throw new Error('Booking created but id missing.');
 
