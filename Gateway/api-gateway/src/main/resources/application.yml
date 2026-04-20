@@ -28,9 +28,7 @@ spring:
         cors-configurations:
           '[/**]':
             allowedOriginPatterns:
-              - "http://localhost:*"
-              - "https://*.netlify.app"
-              - "https://mangohill-*.azurecontainerapps.io"
+              - "**"
             allowedMethods:
             - GET
             - POST
