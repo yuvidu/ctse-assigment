@@ -62,7 +62,7 @@ public class PaymentController {
         StripeCheckoutSessionResponse response = stripeCheckoutService.createCheckoutSession(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
+// something
     @PostMapping("/webhook/stripe")
     @Operation(summary = "Handle Stripe webhook events")
     public ResponseEntity<String> stripeWebhook(
