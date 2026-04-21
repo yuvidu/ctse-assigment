@@ -13,7 +13,7 @@ spring:
           predicates:
             - Path=/users/**
         - id: booking-service
-          uri: ${BOOKING_SERVICE_URL:https://booking-service-late.mangohill-a3908265.southeastasia.azurecontainerapps.io}
+          uri: ${BOOKING_SERVICE_URL:https://booking-service-late-2.mangohill-a3908265.southeastasia.azurecontainerapps.io}
           predicates:
             - Path=/booking/**
         - id: payment-service
