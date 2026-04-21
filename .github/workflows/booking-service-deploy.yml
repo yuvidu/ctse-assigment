@@ -5,7 +5,7 @@ on:
     branches:
       - yuvidu-deploy-service-backend
     paths:
-      - 'Booking-Backend/booking-service/**'
+      - 'booking-service-late/**'
       - '.github/workflows/booking-service-deploy.yml'
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
 
       - name: Build and Push Docker image
         run: |
-          cd Booking-Backend/booking-service
+          cd booking-service-late
           docker build -t bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} .
           docker tag bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }} bookingacrsliitproject.azurecr.io/booking-service:latest
           docker push bookingacrsliitproject.azurecr.io/booking-service:${{ github.sha }}

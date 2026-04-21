@@ -3,6 +3,10 @@ spring:
     name: api-gateway
   cloud:
     gateway:
+      # Longer waits for Stripe + downstream HTTP (default ~30s can surface as 504 + missing CORS on errors).
+      httpclient:
+        connect-timeout: 10000
+        response-timeout: 120s
       routes:
         - id: user-service
           uri: ${USER_SERVICE_URL:https://user-service-app.mangohill-a3908265.southeastasia.azurecontainerapps.io}
@@ -27,17 +31,18 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
+            # Permissive for demos (Vercel, Netlify, localhost, previews). Tighten for production if needed.
             allowedOriginPatterns:
-              - "http://localhost:*"
-              - "https://*.netlify.app"
-              - "https://mangohill-*.azurecontainerapps.io"
+              - "*"
             allowedMethods:
             - GET
             - POST
             - PUT
             - DELETE
+            - PATCH
             - OPTIONS
             allowedHeaders: "*"
+            allowCredentials: false
 
 server:
   port: 8087
